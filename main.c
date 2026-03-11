@@ -1,0 +1,39 @@
+#include "heat.h"
+#include "settings.h"
+#include <stdio.h>
+#include <math.h>
+
+int main(void) {
+    int n = ReadProperties(DATA_FILE);
+    if (n < 0) return 1;
+
+    struct cell_t cells[NT];
+    struct face_t faces[NF];
+
+    makeMesh(cells, faces, L);
+    init(cells, T_INIT);
+    applyBoundaries(cells, T1, T2);
+
+    double time = 0.0;
+    for (int counter = 0; time <= INTEGRATE_TIME; ++counter) {
+        computeFluxes(cells, faces);
+        integrate(cells, TAU);
+        computeSources(cells, TAU);
+        updateTemp(cells);
+        updateParams(cells);
+        applyBoundaries(cells, T1, T2);
+        time += TAU;
+
+        if (counter % 10 == 0) {
+            printf("%f ...\n", time);
+        }
+    }
+
+    /* Вывод: T(x, t_end) — численный профиль */
+    printf("\n# x  T_numerical\n");
+    for (int i = 1; i <= NC; ++i) {
+        printf("%f %f\n", cells[i].x, cells[i].T);
+    }
+
+    return 0;
+}

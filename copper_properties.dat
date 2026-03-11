@@ -1,0 +1,15 @@
+# Теплофизические свойства меди (Cu)
+# Источник: Engineering ToolBox
+# https://www.engineeringtoolbox.com/copper-density-specific-heat-thermal-conductivity-vs-temperature-d_2223.html
+#
+# T [K]    rho [kg/m^3]    Cp [kJ/(kg*K)]    lambda [W/(m*K)]
+100        9009            0.254              480
+150        8992            0.323              429
+200        8973            0.357              413
+250        8951            0.377              406
+300        8930            0.386              401
+400        8884            0.396              393
+600        8787            0.431              379
+800        8642            0.448              366
+1000       8568            0.446              352
+1200       8458            0.480              339

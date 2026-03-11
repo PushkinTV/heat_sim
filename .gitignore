@@ -1,0 +1,23 @@
+# Исполняемые файлы
+heat_sim
+main
+*.exe
+
+# Объектные файлы
+*.o
+*.obj
+
+# Выходные данные
+output_*.dat
+
+# IDE
+.vscode/
+
+# Системные файлы
+.DS_Store
+Thumbs.db
+
+# Backup
+*~
+*.bak
+*.swp
