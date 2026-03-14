@@ -30,10 +30,12 @@ int main(void) {
     }
 
     /* Вывод: T(x, t_end) — численный профиль */
-    printf("\n# x  T_numerical\n");
+    FILE *fp = fopen("T_profile.dat" , "w");
+    fprintf(fp , "\n# x  T_numerical\n");
     for (int i = 1; i <= NC; ++i) {
-        printf("%f %f\n", cells[i].x, cells[i].T);
+        fprintf(fp , "%f %f\n", cells[i].x, cells[i].T);
     }
+    fclose(fp);
 
     return 0;
 }
