@@ -37,5 +37,19 @@ int main(void) {
     }
     fclose(fp);
 
+    /* Аналитическое решение в последний момент времени */
+    double x_arr[NC], Ta[NC];
+    for (int i = 0; i < NC; ++i) {
+        x_arr[i] = cells[i + 1].x;
+    }
+    analyticalSolution(x_arr, Ta, NC, time);
+
+    FILE *fa = fopen("T_analytical.dat", "w");
+    fprintf(fa, "# x  T_analytical\n");
+    for (int i = 0; i < NC; ++i) {
+        fprintf(fa, "%f %f\n", x_arr[i], Ta[i]);
+    }
+    fclose(fa);
+
     return 0;
 }

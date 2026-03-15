@@ -51,4 +51,7 @@ void computeSources(struct cell_t cells[NT], double tau);
 void updateTemp(struct cell_t cells[NT]);
 void updateParams(struct cell_t cells[NT]);
 
+/* --- Аналитическое решение (ряд Фурье) --- */
+void analyticalSolution(double *x, double *Ta, int n, double t);
+
 #endif // HEAT_H

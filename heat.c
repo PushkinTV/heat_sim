@@ -1,6 +1,7 @@
 #include "heat.h"
 #include "settings.h"
 #include <stdio.h>
+#include <math.h>
 
 /* ===== РЕЖИМ 1: Сплайн из .dat ===== */
 #if USE_SPLINE
@@ -189,5 +190,32 @@ void updateParams(struct cell_t cells[NT]) {
         cells[c].rho    = crho(cells[c].T);
         cells[c].lambda = clambda(cells[c].T);
         cells[c].Cv     = cCv(cells[c].T);
+    }
+}
+
+/* ===== Аналитическое решение (ряд Фурье) ===== */
+
+#define K_TERMS 100
+
+void analyticalSolution(double *x, double *Ta, int n, double t) {
+    const double lam = clambda(T_INIT);
+    const double r   = crho(T_INIT);
+    const double cv  = cCv(T_INIT);
+    const double alpha = lam / (r * cv);
+
+    for (int i = 0; i < n; ++i) {
+        /* Стационарная часть */
+        double T = (T2 - T1) / L * x[i] + T1;
+
+        /* Нестационарная часть (ряд Фурье) */
+        for (int k = 1; k <= K_TERMS; ++k) {
+            const double lambda_k = (PI * k / L) * (PI * k / L);
+            const double sign_k = (k % 2 == 0) ? 1.0 : -1.0; /* (-1)^k */
+            const double Ak = (2.0 / (PI * k)) *
+                ((T_INIT - T1) * (1.0 - sign_k) + (T2 - T1) * sign_k);
+            T += Ak * sin(PI * k * x[i] / L) * exp(-alpha * lambda_k * t);
+        }
+
+        Ta[i] = T;
     }
 }
