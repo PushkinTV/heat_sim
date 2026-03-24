@@ -67,6 +67,11 @@ double cqv(double T) {
     return 0.0;
 }
 
+double cq(double t) {
+    (void)t;
+    return Q_LASER;
+}
+
 /* ===== РЕЖИМ 0: Готовые формулы ===== */
 #else
 
@@ -93,6 +98,11 @@ double crho(double T) {
 double cqv(double T) {
     (void)T;
     return 0.0;
+}
+
+double cq(double t) {
+    (void)t;
+    return Q_LASER;
 }
 
 #endif
@@ -130,12 +140,23 @@ void init(struct cell_t cells[NT], double Tinit) {
     }
 }
 
-void applyBoundaries(struct cell_t cells[NT], double Tleft, double Tright) {
+void applyBoundaries(struct cell_t cells[NT], double Tleft, double Tright, double t) {
+#ifdef USE_LASER_FLUX
+    const double q = cq(t);
+    Tleft  = cells[1].T  + H / cells[1].lambda  * q;
+#else
+    (void)t;
+#endif
+
     cells[0].T      = Tleft;
     cells[0].rho    = crho(Tleft);
     cells[0].lambda = clambda(Tleft);
     cells[0].Cv     = cCv(Tleft);
     cells[0].E      = cells[0].rho * cells[0].Cv * Tleft;
+
+#ifdef USE_LASER_FLUX
+    Tright = cells[NC].T - H / cells[NC].lambda * q;
+#endif
 
     cells[NC + 1].T      = Tright;
     cells[NC + 1].rho    = crho(Tright);

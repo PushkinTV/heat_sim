@@ -40,11 +40,12 @@ double clambda(double T);
 double cCv(double T);
 double crho(double T);
 double cqv(double T);
+double cq(double t);
 
 /* --- Функции решателя --- */
 void makeMesh(struct cell_t *cells, struct face_t *faces, double length);
 void init(struct cell_t cells[NT], double Tinit);
-void applyBoundaries(struct cell_t cells[NT], double Tleft, double Tright);
+void applyBoundaries(struct cell_t cells[NT], double Tleft, double Tright, double t);
 void computeFluxes(struct cell_t cells[NT], struct face_t faces[NF]);
 void integrate(struct cell_t cells[NT], double tau);
 void computeSources(struct cell_t cells[NT], double tau);
