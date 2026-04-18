@@ -1,16 +1,28 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-num = np.loadtxt("T_profile.dat")
-ana = np.loadtxt("T_analytical.dat")
+# --- График 1: сравнение прогибов ---
+mech   = np.loadtxt("deflection_mech.dat")
+thermo = np.loadtxt("deflection_thermo.dat")
 
-plt.figure()
-plt.plot(num[:, 0], num[:, 1], label="Численное")
-plt.plot(ana[:, 0], ana[:, 1], '--', label="Аналитическое")
-plt.xlabel("x [m]")
-plt.ylabel("T [K]")
-plt.title("Temperature profile T(x)")
-plt.legend()
-plt.grid(True)
-plt.savefig("T_profile.png", dpi=150)
-plt.show()
+fig1, ax1 = plt.subplots()
+ax1.plot(mech[:, 0],   mech[:, 1],   label="Механический (без температуры)")
+ax1.plot(thermo[:, 0], thermo[:, 1], label="Термоупругий")
+ax1.set_xlabel("x / L")
+ax1.set_ylabel("w [м]")
+ax1.set_title("Прогиб мембраны")
+ax1.legend()
+ax1.grid(True)
+fig1.savefig("deflection_compare.png", dpi=150)
+
+# --- График 2: профиль температуры ---
+prof = np.loadtxt("T_profile.dat")
+
+fig2, ax2 = plt.subplots()
+ax2.plot(prof[:, 0], prof[:, 1], label="T(z)")
+ax2.set_xlabel("z [м]")
+ax2.set_ylabel("T [К]")
+ax2.set_title("Профиль температуры T(z) при t = 20 с")
+ax2.legend()
+ax2.grid(True)
+fig2.savefig("T_profile.png", dpi=150)
