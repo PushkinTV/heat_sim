@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -Wextra -O2 -lm
 
 TARGET = heat_sim
-SRCS = main.c heat.c
+SRCS = main.c heat.c static.c gas.c
 OBJS = $(SRCS:.c=.o)
 
 $(TARGET): $(OBJS)
