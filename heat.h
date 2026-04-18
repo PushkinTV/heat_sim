@@ -41,16 +41,23 @@ double cCv(double T);
 double crho(double T);
 double cqv(double T);
 double cq(double t);
+double cbeta(double T);
+double cE(double T);
+double computeTension(double T_avg);
 
 /* --- Функции решателя --- */
 void makeMesh(struct cell_t *cells, struct face_t *faces, double length);
-void init(struct cell_t cells[NT], double Tinit);
+void init(struct cell_t cells[NT], struct face_t faces[NF], double Tinit);
 void applyBoundaries(struct cell_t cells[NT], double Tleft, double Tright, double t);
-void computeFluxes(struct cell_t cells[NT], struct face_t faces[NF]);
+void computeFluxes(struct cell_t cells[NT], struct face_t faces[NF], double tau);
 void integrate(struct cell_t cells[NT], double tau);
 void computeSources(struct cell_t cells[NT], double tau);
 void updateTemp(struct cell_t cells[NT]);
 void updateParams(struct cell_t cells[NT]);
+
+double computeThermalMoment(struct cell_t cells[NT]);
+double computeBendingStiffness(struct cell_t cells[NT]);
+double averageTemperature(struct cell_t cells[NT]);
 
 /* --- Аналитическое решение (ряд Фурье) --- */
 void analyticalSolution(double *x, double *Ta, int n, double t);
