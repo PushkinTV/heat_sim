@@ -151,7 +151,7 @@ int main(void) {
     printf("T2 = %f K\n", cells[NC].T);
 
     /* п.8: конвективный теплообмен с газом */
-    double q_laser_final = LASER_A * (exp(INTEGRATE_TIME) - 1.0);
+    double q_laser_final = LASER_A * (exp(INTEGRATE_TIME / LASER_T_REF) - 1.0);
     analyzeConvection(cells[NC].T, q_laser_final);
 
     return 0;

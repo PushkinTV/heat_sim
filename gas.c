@@ -3,7 +3,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#define T_ENV    300.0      /* K, комнатная температура */
+#define T_ENV    250.0      /* K, температура теплоносителя (воздух, охлаждённый) */
 #define NU_AIR   1.57e-5    /* м²/с */
 #define LAM_AIR  0.026      /* Вт/(м·К) */
 #define PR_AIR   0.71

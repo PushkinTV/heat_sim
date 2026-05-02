@@ -104,7 +104,7 @@ double cqv(double T) {
 }
 
 double cq(double t) {
-    return LASER_A * (exp(t) - 1.0);
+    return LASER_A * (exp(t / LASER_T_REF) - 1.0);
 }
 
 /* β(T) ≈ 0.5e-6 1/K (коэф. линейного теплового расширения SiO₂) */
