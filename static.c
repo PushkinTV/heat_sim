@@ -25,31 +25,33 @@ void fourier(const double* input, double* output) {
     }
 }
 
-void calculateStaticDeflection(double* u, double tau) {
+/* Релаксация Эйлера-Бернулли к равновесию:
+ *   eps · w'''' − w'' = α·sin²(πx) + extra_load
+ * τ — псевдо-время, eps и extra_load передаются снаружи.
+ * Для механического прогиба: eps_mech = E·h³/(12·L²·T), extra_load = 0.
+ * Для термоупругого:        eps_th = D_th/(L²·T_tens), extra_load = T·M/D_th. */
+void calculateStaticDeflection(double* u, double tau, double eps, double extra_load) {
     double wi[N_BEAM];
     double wip1[N_BEAM];
     double cs[N_BEAM];
     double csp1[N_BEAM];
     double pi[N_BEAM];
     double pe[N_BEAM];
-    /* eps = E(T_INIT)·h³/(12·L²·T) — изгибная жёсткость (безразмерная) */
-    double eps = (cE(T_INIT) * H_THICK * H_THICK * H_THICK)
-                 / (12.0 * L_BEAM * L_BEAM * TENSION_0);
 
     for (int i = 0; i < N_BEAM; ++i)
         wi[i] = 0.0;
 
     double r_tol = 1.0;
-    for (int s = 0; s < 1000 && r_tol > R_TOL; ++s) {
+    for (int s = 0; s < 5000 && r_tol > R_TOL; ++s) {
         fourier(wi, cs);
 
         for (int i = 0; i < N_BEAM; ++i)
-            pi[i] = Px(i);
+            pi[i] = ALPHA_LOAD * Px(i) + extra_load;
 
         fourier(pi, pe);
 
         for (int i = 0; i < N_BEAM; ++i) {
-            csp1[i] = (cs[i] + ALPHA_LOAD * pe[i] * tau)
+            csp1[i] = (cs[i] + pe[i] * tau)
                       / (1.0 - lambda(i) * tau
                          + eps * tau * lambda(i) * lambda(i));
         }
